@@ -1,0 +1,850 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Activities Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .participant-section {
+            padding: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .participant-input {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .participant-input input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .participant-input input:focus {
+            outline: none;
+            border-color: #14b8a6;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .scoreboard {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .scoreboard h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .score-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .score-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .score-item .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .score-item .score {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quiz-section {
+            padding: 30px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #14b8a6;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .question-points {
+            background: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .restaurant-name {
+            color: #4facfe;
+            font-weight: 700;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e6f3ff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .option input[type="radio"] {
+            margin: 0;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .results {
+            background: linear-gradient(135deg, #e8f8f5 0%, #f0fff4 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .participant-input {
+                flex-direction: column;
+            }
+            
+            .participant-input input {
+                min-width: 100%;
+            }
+            
+            .score-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Research Activities Challenge</h1>
+            <div class="difficulty-badge">Beginner - Intermediate | Trainer Led Activity</div>
+            <p>Test your research skills with 18 questions • 10 points each • Track your progress!</p>
+        </div>
+
+        <div class="participant-section">
+            <h3 style="margin-bottom: 15px; color: #333;">Enter Your Name to Start</h3>
+            <div class="participant-input">
+                <input type="text" id="participantName" placeholder="Enter your full name..." maxlength="50">
+                <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+            </div>
+        </div>
+
+        <div class="scoreboard hidden" id="scoreboard">
+            <h3>🏆 Live Scoreboard</h3>
+            <div class="score-list" id="scoreList"></div>
+        </div>
+
+        <div class="quiz-section hidden" id="quizSection">
+            <!-- Question 1 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 1</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Does this restaurant offer catering services? - <a href="https://www.olivegarden.com/home" target="_blank" class="restaurant-name">Olive Garden</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="yes"> Yes
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="no"> No
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 2</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">This restaurant is open from Friday - Saturday: 06am - 10am? - <a href="https://www.nuovoyorkpizza.com/" target="_blank" class="restaurant-name">Nuovo York Pizza</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="true"> True
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="false"> False
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 3</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Da Andrea is a leading restaurant known for which type of cuisine? - <a href="https://daandreanyc.com/" target="_blank" class="restaurant-name">Da Andrea</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="french"> French
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="italian"> Italian
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="greek"> Greek
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="spanish"> Spanish
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 4</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Which of the following is NOT typically listed on the Contact Us page?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="email"> Email
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="phone"> Phone number
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="menu"> Menu items
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="address"> Address
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 5</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">What email is listed for reservations on 432 Park Avenue Restaurant's website? - <a href="https://www.432parkavenuerestaurant.com/" target="_blank" class="restaurant-name">432 Park Avenue Restaurant</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="reservations"> reservations@432parkavenue.com
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="dining"> dining@432parkavenue.com
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="info"> info@432parkavenue.com
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="reserve"> reserve@432parkavenue.com
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 6</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">How tall is the London Eye? - <a href="https://www.londoneye.com/" target="_blank" class="restaurant-name">London Eye</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="100"> 100 meters (328 feet)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="150"> 150 meters (492 feet)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="135"> 135 meters (443 feet)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="120"> 120 meters (394 feet)
+                    </label>
+                </div>
+            </div>
+
+
+
+            <!-- Question 7 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 7</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">The Jane Hotel is adjacent to which river? - <a href="https://thejanenyc.com/" target="_blank" class="restaurant-name">The Jane Hotel</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="east"> East River
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="hudson"> Hudson River
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="harlem"> Harlem River
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="delaware"> Delaware River
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 8</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Which of the following statements is false about Zuni Café (San Francisco)? - <a href="http://zunicafe.com/" target="_blank" class="restaurant-name">Zuni Café</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="everyday"> They are open every day of the week
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="sf"> They are based in San Francisco
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="reservations"> They accept reservations for up to 4 weeks in advance
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="meals"> They serve Lunch & Dinner
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 9</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">You cannot book tickets for New York City's Mercer Labs (Museum of Art and Technology) online? - <a href="https://mercerlabs.com/" target="_blank" class="restaurant-name">Mercer Labs</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="true"> True
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="false"> False
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 10</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">How many steps does the Empire State Building have?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="1860"> 1860 Steps
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="1960"> 1960 Steps
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="1976"> 1976 Steps
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="1840"> 1840 Steps
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 11</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">True or False: Park Terrace Hotel offers a Hypnotherapy Wellness Package. - <a href="https://parkterracehotel.com/" target="_blank" class="restaurant-name">Park Terrace Hotel</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="true"> True
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="false"> False
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 12</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">What are the check-in and check-out times at Evelyn Hotel? - <a href="https://www.theevelyn.com/" target="_blank" class="restaurant-name">Evelyn Hotel</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="2pm11am"> Check-in at 2 PM, check-out at 11 AM
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="3pm12pm"> Check-in at 3 PM, check-out at 12 PM
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="4pm11am"> Check-in at 4 PM, check-out at 11 AM
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="3pm1pm"> Check-in at 3 PM, check-out at 1 PM
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 13</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">What is the postal code for Spice Symphony's Lexington Avenue location? - <a href="https://spicesymphony.com/" target="_blank" class="restaurant-name">Spice Symphony</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="10016"> 10016
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="10022"> 10022
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="10036"> 10036
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="10045"> 10045
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 14</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Zeppola Bakery is located next to which famous landmark? - <a href="https://zeppolabakery.com/" target="_blank" class="restaurant-name">Zeppola Bakery</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="central"> Central Park
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="times"> Times Square
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="moma"> The Museum of Modern Art (MoMA)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="empire"> Empire State Building
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 15</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">True or False: Loi Estiatorio offers private dining. - <a href="https://www.loiestiatorio.com/" target="_blank" class="restaurant-name">Loi Estiatorio</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="true"> True
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="false"> False
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 16 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 16</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">What is the official address of Yankee Stadium? - <a href="https://www.mlb.com/yankees/" target="_blank" class="restaurant-name">Yankee Stadium</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q16" value="penn"> 4 Pennsylvania Plaza, New York, NY 10001
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="main"> 123 Main Street, Bronx, NY 10451
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="161st"> One East 161st Street, Bronx, NY 10451
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="5th"> 1000 5th Avenue, New York, NY 10028
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 17 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 17</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Jaburritos is a cashless establishment? - <a href="https://www.jaburritos.com/" target="_blank" class="restaurant-name">Jaburritos</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q17" value="true"> True
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="false"> False
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 18 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question 18</span>
+                    <span class="question-points">10 Points</span>
+                </div>
+                <div class="question-text">Hot Chocolate in Eggscellent's drinks menu is priced at $4.29? - <a href="https://eggscellentlv.com/" target="_blank" class="restaurant-name">Eggscellent</a></div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q18" value="yes"> Yes
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="no"> No
+                    </label>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button class="btn btn-primary" onclick="submitQuiz()" style="font-size: 1.2rem; padding: 15px 30px;">Submit Quiz</button>
+            </div>
+
+            <div class="results hidden" id="results">
+                <div class="final-score" id="finalScore"></div>
+                <p id="resultMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let participants = JSON.parse(localStorage.getItem('quizParticipants')) || [];
+        let currentParticipant = '';
+
+        // Correct answers
+        const correctAnswers = {
+            q1: 'yes',
+            q2: 'false',
+            q3: 'italian',
+            q4: 'menu',
+            q5: 'reservations',
+            q6: '135',
+            q7: 'hudson',
+            q8: 'everyday',
+            q9: 'false',
+            q10: '1860',
+            q11: 'true',
+            q12: '3pm12pm',
+            q13: '10016',
+            q14: 'moma',
+            q15: 'true',
+            q16: '161st',
+            q17: 'true',
+            q18: 'yes'
+        };
+
+        function startQuiz() {
+            const nameInput = document.getElementById('participantName');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                alert('Please enter your name to start the quiz!');
+                return;
+            }
+
+            currentParticipant = name;
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('scoreboard').classList.remove('hidden');
+            updateScoreboard();
+            
+            // Scroll to quiz
+            document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let correctCount = 0;
+            
+            // Calculate score
+            for (let i = 1; i <= 18; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const questionCard = document.querySelector(`input[name="q${i}"]`).closest('.question-card');
+                const options = questionCard.querySelectorAll('.option');
+                
+                if (selected && selected.value === correctAnswers[`q${i}`]) {
+                    score += 10;
+                    correctCount++;
+                    
+                    // Mark correct answer
+                    selected.closest('.option').classList.add('correct');
+                } else {
+                    // Mark incorrect answers and show correct one
+                    options.forEach(option => {
+                        const input = option.querySelector('input');
+                        if (input.checked && input.value !== correctAnswers[`q${i}`]) {
+                            option.classList.add('incorrect');
+                        }
+                        if (input.value === correctAnswers[`q${i}`]) {
+                            option.classList.add('correct');
+                        }
+                    });
+                }
+                
+                // Disable all options for this question
+                options.forEach(option => {
+                    option.style.pointerEvents = 'none';
+                });
+            }
+
+            // Save participant score
+            const existingIndex = participants.findIndex(p => p.name === currentParticipant);
+            if (existingIndex >= 0) {
+                participants[existingIndex].score = score;
+            } else {
+                participants.push({ name: currentParticipant, score: score });
+            }
+            
+            localStorage.setItem('quizParticipants', JSON.stringify(participants));
+            
+            // Show results
+            document.getElementById('finalScore').textContent = `${score}/180 points`;
+            document.getElementById('resultMessage').textContent = 
+                `You got ${correctCount} out of 18 questions correct! ${getScoreMessage(score)}`;
+            document.getElementById('results').classList.remove('hidden');
+            
+            updateScoreboard();
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getScoreMessage(score) {
+            if (score >= 160) return '🏆 Outstanding research skills!';
+            if (score >= 135) return '🌟 Excellent work!';
+            if (score >= 108) return '👍 Good job!';
+            if (score >= 81) return '📚 Keep practicing!';
+            return '💪 Room for improvement - try again!';
+        }
+
+        function updateScoreboard() {
+            const scoreList = document.getElementById('scoreList');
+            const sortedParticipants = [...participants].sort((a, b) => b.score - a.score);
+            
+            scoreList.innerHTML = sortedParticipants.map(participant => `
+                <div class="score-item">
+                    <span class="name">${participant.name}</span>
+                    <span class="score">${participant.score}/180</span>
+                </div>
+            `).join('');
+        }
+
+        // Add click handlers for options
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input[type="radio"]');
+                    if (input && !input.disabled) {
+                        input.checked = true;
+                        
+                        // Remove selected class from siblings
+                        const siblings = this.parentNode.querySelectorAll('.option');
+                        siblings.forEach(sibling => sibling.classList.remove('selected'));
+                        
+                        // Add selected class to this option
+                        this.classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        // Load existing scoreboard on page load
+        updateScoreboard();
+        if (participants.length > 0) {
+            document.getElementById('scoreboard').classList.remove('hidden');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95faba4633254932',t:'MTc1MjU5Nzg5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
